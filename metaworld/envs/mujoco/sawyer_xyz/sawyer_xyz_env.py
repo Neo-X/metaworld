@@ -284,7 +284,7 @@ class SawyerXYZEnv(SawyerMocapBase, metaclass=abc.ABCMeta):
 
         return self._get_obs()
 
-    def reset(self):
+    def reset(self, reset_args=None):
         self.curr_path_length = 0
         return super().reset()
 

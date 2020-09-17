@@ -78,7 +78,7 @@ class MujocoEnv(gym.Env, abc.ABC):
         pass
 
     @_assert_task_is_set
-    def reset(self):
+    def reset(self, reset_args=None):
         self.sim.reset()
         ob = self.reset_model()
         if self.viewer is not None:
@@ -127,3 +127,6 @@ class MujocoEnv(gym.Env, abc.ABC):
 
     def get_body_com(self, body_name):
         return self.data.get_body_xpos(body_name)
+    
+    def log_diagnostics(self, paths, prefix=None):
+        return {}
