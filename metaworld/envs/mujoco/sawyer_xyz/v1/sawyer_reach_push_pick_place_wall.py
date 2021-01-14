@@ -7,7 +7,7 @@ from metaworld.envs.mujoco.sawyer_xyz.sawyer_xyz_env import SawyerXYZEnv, _asser
 
 class SawyerReachPushPickPlaceWallEnv(SawyerXYZEnv):
 
-    def __init__(self):
+    def __init__(self, render_env=False):
 
         liftThresh = 0.04
         goal_low = (-0.05, 0.85, 0.05)
@@ -16,6 +16,8 @@ class SawyerReachPushPickPlaceWallEnv(SawyerXYZEnv):
         hand_high = (0.5, 1, 0.5)
         obj_low = (-0.05, 0.6, 0.015)
         obj_high = (0.05, 0.65, 0.015)
+
+        self.render_env = render_env
 
         self.task_types = ['pick_place', 'reach', 'push']
 
@@ -46,6 +48,9 @@ class SawyerReachPushPickPlaceWallEnv(SawyerXYZEnv):
         self.goal_space = Box(np.array(goal_low), np.array(goal_high))
 
         self.num_resets = 0
+
+    def set_render(self, render_env):
+        self.render_env = render_env
 
     def _set_task_inner(self, *, task_type, **kwargs):
         super()._set_task_inner(**kwargs)
@@ -85,6 +90,9 @@ class SawyerReachPushPickPlaceWallEnv(SawyerXYZEnv):
             'goalDist': goal_dist,
             'success': success
         }
+
+        if self.render_env:
+            info['rendering'] = self.render(mode=self.render_env)
 
         return ob, reward, False, info
 
