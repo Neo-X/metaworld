@@ -277,7 +277,6 @@ medium_mode_train_args_kwargs['reach-v1']['kwargs']['task_type'] = 'reach'
 medium_mode_train_args_kwargs['push-v1']['kwargs']['task_type'] = 'push'
 medium_mode_train_args_kwargs['pick-place-v1']['kwargs'][
     'task_type'] = 'pick_place'
-
 MEDIUM_MODE_ARGS_KWARGS = dict(
     train=medium_mode_train_args_kwargs,
     test=medium_mode_test_args_kwargs,
