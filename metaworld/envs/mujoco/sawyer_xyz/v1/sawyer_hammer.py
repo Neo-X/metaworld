@@ -6,7 +6,7 @@ from metaworld.envs.mujoco.sawyer_xyz.sawyer_xyz_env import SawyerXYZEnv, _asser
 
 
 class SawyerHammerEnv(SawyerXYZEnv):
-    def __init__(self):
+    def __init__(self, render_env=False):
 
         liftThresh = 0.09
         hand_low = (-0.5, 0.40, 0.05)
@@ -15,6 +15,8 @@ class SawyerHammerEnv(SawyerXYZEnv):
         obj_high = (0.1, 0.6, 0.02)
         goal_low = (0.2399, .7399, 0.109)
         goal_high = (0.2401, .7401, 0.111)
+
+        self.render_env = render_env
 
         super().__init__(
             self.model_name,
@@ -36,6 +38,9 @@ class SawyerHammerEnv(SawyerXYZEnv):
         self._random_reset_space = Box(np.array(obj_low), np.array(obj_high))
         self.goal_space = Box(np.array(goal_low), np.array(goal_high))
 
+    def set_render(self, render_env):
+        self.render_env = render_env
+
     @property
     def model_name(self):
         return get_asset_full_path('sawyer_xyz/sawyer_hammer.xml')
@@ -53,6 +58,9 @@ class SawyerHammerEnv(SawyerXYZEnv):
             'goalDist': screwDist,
             'success': float(screwDist <= 0.05)
         }
+
+        if self.render_env:
+            info['rendering'] = self.render(mode=self.render_env)
 
         return ob, reward, False, info
 
