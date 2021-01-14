@@ -60,6 +60,9 @@ class SawyerDoorEnv(SawyerXYZEnv):
             'success': float(pullDist <= 0.08)
         }
 
+        if self.render_env:
+            info['rendering'] = self.render(mode=self.render_env)
+
         return ob, reward, False, info
 
     def _get_pos_objects(self):

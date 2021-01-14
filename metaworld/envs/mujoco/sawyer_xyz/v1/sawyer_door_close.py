@@ -4,7 +4,10 @@ from metaworld.envs.mujoco.sawyer_xyz.v1.sawyer_door import SawyerDoorEnv, _asse
 
 
 class SawyerDoorCloseEnv(SawyerDoorEnv):
-    def __init__(self):
+    def __init__(self, render_env=False):
+
+        self.render_env = render_env
+
         super().__init__()
 
         self.init_config = {
@@ -16,6 +19,9 @@ class SawyerDoorCloseEnv(SawyerDoorEnv):
         self.obj_init_pos = self.init_config['obj_init_pos']
         self.obj_init_angle = self.init_config['obj_init_angle']
         self.hand_init_pos = self.init_config['hand_init_pos']
+        self.step
+    def set_render(self, render_env):
+        self.render_env = render_env
 
     def reset_model(self):
         self._reset_hand()
