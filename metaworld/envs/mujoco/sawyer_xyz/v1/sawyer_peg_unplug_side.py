@@ -7,7 +7,7 @@ from metaworld.envs.mujoco.sawyer_xyz.sawyer_xyz_env import SawyerXYZEnv, _asser
 
 class SawyerPegUnplugSideEnv(SawyerXYZEnv):
 
-    def __init__(self):
+    def __init__(self, render_env=False):
 
         liftThresh = 0.04
         hand_low = (-0.5, 0.40, 0.05)
@@ -16,6 +16,8 @@ class SawyerPegUnplugSideEnv(SawyerXYZEnv):
         obj_high = (-0.15, 0.8, 0.05)
         goal_low = (-0.05, 0.6, 0.019)
         goal_high = (0.2, 0.8, 0.021)
+
+        self.render_env = render_env
 
         super().__init__(
             self.model_name,
@@ -40,6 +42,9 @@ class SawyerPegUnplugSideEnv(SawyerXYZEnv):
         )
         self.goal_space = Box(np.array(goal_low), np.array(goal_high))
 
+    def set_render(self, render_env):
+        self.render_env = render_env
+
     @property
     def model_name(self):
         return get_asset_full_path('sawyer_xyz/sawyer_peg_unplug_side.xml')
@@ -57,6 +62,9 @@ class SawyerPegUnplugSideEnv(SawyerXYZEnv):
             'goalDist': placingDist,
             'success': float(placingDist <= 0.07)
         }
+
+        if self.render_env:
+            info['rendering'] = self.render(mode=self.render_env)
 
         return ob, reward, False, info
 
