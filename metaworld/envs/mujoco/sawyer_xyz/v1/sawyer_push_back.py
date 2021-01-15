@@ -6,7 +6,7 @@ from metaworld.envs.mujoco.sawyer_xyz.sawyer_xyz_env import SawyerXYZEnv, _asser
 
 
 class SawyerPushBackEnv(SawyerXYZEnv):
-    def __init__(self):
+    def __init__(self, render_env=False):
 
         goal_low = (-0.1, 0.6, 0.0199)
         goal_high = (0.1, 0.7, 0.0201)
@@ -14,6 +14,8 @@ class SawyerPushBackEnv(SawyerXYZEnv):
         hand_high = (0.5, 1, 0.5)
         obj_low = (-0.1, 0.8, 0.02)
         obj_high = (0.1, 0.85, 0.02)
+
+        self.render_env = render_env
 
         super().__init__(
             self.model_name,
@@ -39,6 +41,9 @@ class SawyerPushBackEnv(SawyerXYZEnv):
         )
         self.goal_space = Box(np.array(goal_low), np.array(goal_high))
 
+    def set_render(self, render_env):
+        self.render_env = render_env
+
     @property
     def model_name(self):
         return get_asset_full_path('sawyer_xyz/sawyer_push_back.xml')
@@ -56,6 +61,9 @@ class SawyerPushBackEnv(SawyerXYZEnv):
             'pickRew': None,
             'success': float(pushDist <= 0.07)
         }
+
+        if self.render_env:
+            info['rendering'] = self.render(mode=self.render_env)
 
         return ob, reward, False, info
 
