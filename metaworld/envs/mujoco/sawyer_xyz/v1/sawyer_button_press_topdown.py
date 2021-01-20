@@ -7,7 +7,7 @@ from metaworld.envs.mujoco.sawyer_xyz.sawyer_xyz_env import SawyerXYZEnv, _asser
 
 class SawyerButtonPressTopdownEnv(SawyerXYZEnv):
 
-    def __init__(self, render_env):
+    def __init__(self, render_env=False):
 
         hand_low = (-0.5, 0.40, 0.05)
         hand_high = (0.5, 1, 0.5)
