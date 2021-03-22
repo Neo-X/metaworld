@@ -1,7 +1,7 @@
 import numpy as np
 from gym.spaces import Box
 
-from metaworld.envs.env_util import get_asset_full_path
+from metaworld.envs.asset_path_utils import full_v1_path_for
 from metaworld.envs.mujoco.sawyer_xyz.sawyer_xyz_env import SawyerXYZEnv, _assert_task_is_set
 
 
@@ -32,7 +32,6 @@ class SawyerStickPullEnv(SawyerXYZEnv):
         self.hand_init_pos = self.init_config['hand_init_pos']
 
         self.liftThresh = liftThresh
-        
 
         # Fix object init position.
         self.obj_init_pos = np.array([0.2, 0.69, 0.04])
@@ -46,13 +45,12 @@ class SawyerStickPullEnv(SawyerXYZEnv):
 
     @property
     def model_name(self):
-        return get_asset_full_path('sawyer_xyz/sawyer_stick_obj.xml')
+        return full_v1_path_for('sawyer_xyz/sawyer_stick_obj.xml')
 
     @_assert_task_is_set
     def step(self, action):
         ob = super().step(action)
         reward, _, reachDist, pickRew, _, pullDist, _ = self.compute_reward(action, ob)
-        self.curr_path_length += 1
 
         info = {
             'reachDist': reachDist,
