@@ -19,7 +19,8 @@ class SawyerMocapBase(MujocoEnv, metaclass=abc.ABCMeta):
     mocap_low = np.array([-0.2, 0.5, 0.06])
     mocap_high = np.array([0.2, 0.7, 0.6])
 
-    def __init__(self, model_name, frame_skip=5):
+    def __init__(self, model_name, frame_skip=5, render_env=False):
+        self.render_env = render_env
         MujocoEnv.__init__(self, model_name, frame_skip=frame_skip)
         self.reset_mocap_welds()
 
@@ -97,8 +98,9 @@ class SawyerXYZEnv(SawyerMocapBase, metaclass=abc.ABCMeta):
             mocap_high=None,
             action_scale=1./100,
             action_rot_scale=1.,
+            render_env=False,
     ):
-        super().__init__(model_name, frame_skip=frame_skip)
+        super().__init__(model_name, frame_skip=frame_skip, render_env=render_env)
         self.random_init = True
         self.action_scale = action_scale
         self.action_rot_scale = action_rot_scale
