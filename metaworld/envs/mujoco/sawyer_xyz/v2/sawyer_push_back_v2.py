@@ -12,7 +12,7 @@ class SawyerPushBackEnvV2(SawyerXYZEnv):
     OBJ_RADIUS = 0.007
     TARGET_RADIUS = 0.05
 
-    def __init__(self, render_env=Fakse):
+    def __init__(self, render_env=False):
 
         goal_low = (-0.1, 0.6, 0.0199)
         goal_high = (0.1, 0.7, 0.0201)
