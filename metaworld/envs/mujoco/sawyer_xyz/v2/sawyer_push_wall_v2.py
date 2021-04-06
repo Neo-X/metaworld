@@ -28,7 +28,7 @@ class SawyerPushWallEnvV2(SawyerXYZEnv):
 
     OBJ_RADIUS = 0.02
 
-    def __init__(self):
+    def __init__(self, render_env=False):
         hand_low = (-0.5, 0.40, 0.05)
         hand_high = (0.5, 1, 0.5)
         obj_low = (-0.05, 0.6, 0.015)
@@ -40,6 +40,7 @@ class SawyerPushWallEnvV2(SawyerXYZEnv):
             self.model_name,
             hand_low=hand_low,
             hand_high=hand_high,
+            render_env=render_env
         )
 
         self.init_config = {
@@ -61,6 +62,12 @@ class SawyerPushWallEnvV2(SawyerXYZEnv):
         self.goal_space = Box(np.array(goal_low), np.array(goal_high))
 
         self.num_resets = 0
+
+    def step(self, action):
+        o, r, d, info = super().step(action=action)
+        if self.render_env == 'rgb_array':
+            info['rendering'] = self.render(self.render_env)
+        return o, r, d, info
 
     @property
     def model_name(self):

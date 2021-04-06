@@ -12,7 +12,7 @@ class SawyerPushBackEnvV2(SawyerXYZEnv):
     OBJ_RADIUS = 0.007
     TARGET_RADIUS = 0.05
 
-    def __init__(self):
+    def __init__(self, render_env=Fakse):
 
         goal_low = (-0.1, 0.6, 0.0199)
         goal_high = (0.1, 0.7, 0.0201)
@@ -25,6 +25,7 @@ class SawyerPushBackEnvV2(SawyerXYZEnv):
             self.model_name,
             hand_low=hand_low,
             hand_high=hand_high,
+            render_env=render_env
         )
 
         self.init_config = {
@@ -42,6 +43,12 @@ class SawyerPushBackEnvV2(SawyerXYZEnv):
             np.hstack((obj_high, goal_high)),
         )
         self.goal_space = Box(np.array(goal_low), np.array(goal_high))
+
+    def step(self, action):
+        o, r, d, info = super().step(action=action)
+        if self.render_env == 'rgb_array':
+            info['rendering'] = self.render(self.render_env)
+        return o, r, d, info
 
     @property
     def model_name(self):

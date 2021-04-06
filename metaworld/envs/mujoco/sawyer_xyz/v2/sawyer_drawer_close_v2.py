@@ -8,7 +8,7 @@ from metaworld.envs.mujoco.sawyer_xyz.sawyer_xyz_env import SawyerXYZEnv, _asser
 
 class SawyerDrawerCloseEnvV2(SawyerXYZEnv):
     _TARGET_RADIUS = 0.04
-    def __init__(self):
+    def __init__(self, render_env=False):
 
         hand_low = (-0.5, 0.40, 0.05)
         hand_high = (0.5, 1, 0.5)
@@ -19,6 +19,7 @@ class SawyerDrawerCloseEnvV2(SawyerXYZEnv):
             self.model_name,
             hand_low=hand_low,
             hand_high=hand_high,
+            render_env=render_env
         )
 
         self.init_config = {
@@ -41,6 +42,12 @@ class SawyerDrawerCloseEnvV2(SawyerXYZEnv):
 
         self.maxDist = 0.15
         self.target_reward = 1000 * self.maxDist + 1000 * 2
+
+    def step(self, action):
+        o, r, d, info = super().step(action=action)
+        if self.render_env == 'rgb_array':
+            info['rendering'] = self.render(self.render_env)
+        return o, r, d, info
 
     @property
     def model_name(self):

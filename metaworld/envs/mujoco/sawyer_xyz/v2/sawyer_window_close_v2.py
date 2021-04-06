@@ -18,7 +18,7 @@ class SawyerWindowCloseEnvV2(SawyerXYZEnv):
         - (6/15/20) Increased max_path_length from 150 to 200
     """
     TARGET_RADIUS = 0.05
-    def __init__(self):
+    def __init__(self, render_env=False):
 
         liftThresh = 0.02
         hand_low = (-0.5, 0.40, 0.05)
@@ -30,6 +30,7 @@ class SawyerWindowCloseEnvV2(SawyerXYZEnv):
             self.model_name,
             hand_low=hand_low,
             hand_high=hand_high,
+            render_env=render_env
         )
 
         self.init_config = {
@@ -55,6 +56,12 @@ class SawyerWindowCloseEnvV2(SawyerXYZEnv):
 
         self.maxPullDist = 0.2
         self.target_reward = 1000 * self.maxPullDist + 1000 * 2
+
+    def step(self, action):
+        o, r, d, info = super().step(action=action)
+        if self.render_env == 'rgb_array':
+            info['rendering'] = self.render(self.render_env)
+        return o, r, d, info
 
     @property
     def model_name(self):

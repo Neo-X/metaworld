@@ -20,7 +20,7 @@ class SawyerReachEnvV2(SawyerXYZEnv):
             i.e. (self._target_pos - pos_hand)
         - (6/15/20) Separated reach-push-pick-place into 3 separate envs.
     """
-    def __init__(self):
+    def __init__(self, render_env=False):
         goal_low = (-0.1, 0.8, 0.05)
         goal_high = (0.1, 0.9, 0.3)
         hand_low = (-0.5, 0.40, 0.05)
@@ -32,6 +32,7 @@ class SawyerReachEnvV2(SawyerXYZEnv):
             self.model_name,
             hand_low=hand_low,
             hand_high=hand_high,
+            render_env=render_env
         )
 
         self.init_config = {
@@ -53,6 +54,12 @@ class SawyerReachEnvV2(SawyerXYZEnv):
         self.goal_space = Box(np.array(goal_low), np.array(goal_high))
 
         self.num_resets = 0
+
+    def step(self, action):
+        o, r, d, info = super().step(action=action)
+        if self.render_env == 'rgb_array':
+            info['rendering'] = self.render(self.render_env)
+        return o, r, d, info
 
     @property
     def model_name(self):

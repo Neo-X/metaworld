@@ -7,12 +7,12 @@ from metaworld.envs.mujoco.sawyer_xyz.sawyer_xyz_env import SawyerXYZEnv, _asser
 
 
 class SawyerDoorCloseEnvV2(SawyerDoorEnvV2):
-    def __init__(self):
+    def __init__(self, render_env=False):
 
         goal_low = (.2, 0.65, 0.1499)
         goal_high = (.3, 0.75, 0.1501)
 
-        super().__init__()
+        super().__init__(render_env=render_env)
 
         self.init_config = {
             'obj_init_angle': 0.3,
