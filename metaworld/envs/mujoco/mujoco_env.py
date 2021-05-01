@@ -38,7 +38,7 @@ class MujocoEnv(gym.Env, abc.ABC):
 
     max_path_length = 150
 
-    def __init__(self, model_path, frame_skip, rgb_array_res=(640, 480)):
+    def __init__(self, model_path, frame_skip, rgb_array_res=(320, 240)):
         if not path.exists(model_path):
             raise IOError("File %s does not exist" % model_path)
 
